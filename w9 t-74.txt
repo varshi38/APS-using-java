@@ -1,0 +1,41 @@
+
+import java.util.*;
+
+class Solution {
+    public List<Integer> countSmaller(int[] nums) {
+        int n = nums.length;
+        int[] counts = new int[n];
+
+        // Fenwick Tree supports values from -10000 to 10000
+        int[] tree = new int[20002];
+        List<Integer> result = new ArrayList<>();
+
+        for (int i = n - 1; i >= 0; i--) {
+            int index = nums[i] + 10001;
+
+            // Count smaller elements to the right
+            int sum = 0;
+            int j = index - 1;
+
+            while (j > 0) {
+                sum += tree[j];
+                j -= j & -j;
+            }
+
+            counts[i] = sum;
+
+            // Update Fenwick Tree
+            j = index;
+            while (j < tree.length) {
+                tree[j]++;
+                j += j & -j;
+            }
+        }
+
+        for (int count : counts) {
+            result.add(count);
+        }
+
+        return result;
+    }
+}

@@ -1,0 +1,29 @@
+import java.util.*;
+
+class Solution {
+    public int numUniqueEmails(String[] emails) {
+        Set<String> uniqueEmails = new HashSet<>();
+
+        for (String email : emails) {
+            String[] parts = email.split("@");
+            String local = parts[0];
+            String domain = parts[1];
+
+            StringBuilder cleaned = new StringBuilder();
+
+            for (char ch : local.toCharArray()) {
+                if (ch == '+') {
+                    break;
+                }
+
+                if (ch != '.') {
+                    cleaned.append(ch);
+                }
+            }
+
+            uniqueEmails.add(cleaned.toString() + "@" + domain);
+        }
+
+        return uniqueEmails.size();
+    }
+}
